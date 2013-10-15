@@ -28,6 +28,7 @@
 *	[Melissa / Jacob](http://melissajacob2013.com/)
 *	[CAB about](http://osi.ucf.edu/cab/committees-contact/)
 *	[VUCF Events](http://osi.ucf.edu/vucf/calendar/)
+*	[Instructables](http://www.instructables.com/)
 	
 
 ###Color Scheme:
