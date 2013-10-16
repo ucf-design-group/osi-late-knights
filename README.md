@@ -22,7 +22,7 @@
 * Moon
 * Stars
 * Adaptable design for each event
-* Campus Sillouette (ask sam)
+* Campus Sillouette
 
 ####Usable links for inspirtation
 *	[Melissa / Jacob](http://melissajacob2013.com/)
@@ -32,6 +32,6 @@
 	
 
 ###Color Scheme:
-	#blue
-	#black
+	##004D66 (blue/green)
+	#000000 (black)
 	#yellow/moon/stars
