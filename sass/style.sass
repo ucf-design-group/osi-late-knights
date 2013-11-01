@@ -1,36 +1,577 @@
 /*!
- Theme Name: Late-Knights
- Theme URI: http://github.com/aj-foster/MiniBill-2
- Description: A minimal starting point for WordPress, adapted from Underscores.me
- Author: JP Costallos, AJ Foster
- Author URI: http://jpcostallos.com, http://aj-foster.com
- Version: 0.91
- Tags: minimal, fast, light
- License: None, feel free to hack :)
+ * Theme Name: Late Knights
+ * Theme URI: http://github.com/ucf-design-group/osi-late-knights
+ * Description: Late Knights' Theme
+ * Author: JP Costallos, AJ Foster
+ * Author URI: http://jpcostallos.com
  */
 
-// Change this to whatever you'd like. This is just the defualt so we 
-// have something nice to prototype with.
-@import url("http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700")
+/* Imports
+ *
+ * reset: standard CSS cross-browser resets by Eric Meyer
+ * menu: base styles related to the <nav> element
+ * footer: base styles related to the <footer> element
+ */
 
-// Necessary imports, feel free to explore and hack though :)
-@import reset, menu, buttons, footer
+@import reset, menu, footer
 
-// Base variables
-$baseTypeFace: 'Open Sans', sans-serif
 
-// Base layout/type
-html
-	font-size: 16px
-body
-	font: 62.5%/1.5 $baseTypeFace
-	font-weight: 600 
-	
-// Clearfix (to use, @extend %clearfix)
+/* Variables
+ *
+ * serifType: typeface used for body text
+ * sansType: typeface used for header text
+ * maxWidth: maximum width any element should extend
+ */
+
+$serifType: "kepler-std", Helvetica, sans-serif
+$sansType: "ff-tisa-sans-web-pro"
+$maxWidth: 1000px
+
+// Colors Used in the Site
+
+$black: #000000
+$blue: #004D66
+$grey: #222629
+$white: #FFFFFF
+$yellow: #dcba4c
+$cream: #f4de87
+
+
+/* Clearfix
+ *
+ * This Sass extension makes any elements with floated children extend to
+ * contain those children.  Use this on the parent of any floated element
+ * by saying "@extend %clearfix".
+ */
+
 %clearfix
 	zoom: 1
 	&:before, &:after
 		content: ""
-		display: table 
+		display: table
 	&:after
 		clear: both
+
+
+// Main Styles
+
+body
+	
+	/* Background
+	 *
+	 * The background is a linear gradient from black to blue, which looks like
+	 * the night sky at dusk.  This works in most browsers, with some older
+	 * browsers requiring prefixes.  "to bottom" is a relatively new addition
+	 * to the specification, so it may not work.  If nothing else, background:
+	 * $blue is a fallback.  Background-attachment: fixed keeps the background
+	 * constant as you scroll.
+	 */
+
+	background: $blue
+	background: -webkit-linear-gradient(to bottom, $black, $blue) 
+	background: -moz-linear-gradient(to bottom, $black, $blue)
+	background: linear-gradient(to bottom, $black, $blue)
+	background-attachment: fixed
+	
+	// For readability, these settings are pretty common.
+	
+	letter-spacing: 1.25px
+	line-height: 1.5
+	
+	// Other styles
+
+	color: $white
+	font-family: $serifType
+	font-size: 1.125em
+	font-weight: 300
+	height: 100%
+	overflow: auto
+
+
+/* Section
+ *
+ * Sections are the main divisions on the page.  In order to make sure only one
+ * section is visible at once, we set a min-height of 800px here, and use
+ * javascript to change this on page load.  See js/main.js for more info.
+ */
+
+section
+
+	min-height: 800px
+	@extend %clearfix
+
+
+/* Article
+ *
+ * Articles are the individual pieces within each main section.  At a maximum,
+ * we only want articles to extend to a certain width.
+ */
+
+article
+
+	max-width: $maxWidth
+	//@extend %clearfix
+
+
+/* Anchors
+ *
+ * In order to put emphasis on links, we make them yellow instead of underlining
+ * them.  Hover states are always a good idea - even better if they have a
+ * smooth transition.
+ */
+
+a
+	
+	// In Firefox, stop annoying outlines on active links.
+	outline: none
+	
+	color: $yellow
+	text-decoration: none
+	
+	&:hover, &:focus
+		color: lighten($yellow, 20%)
+		
+	-webkit-transition: color 1s
+	-moz-transition: color 1s
+	-ms-transition: color 1s
+	-o-transition: color 1s
+	transition: color 1s
+
+
+/* Nav
+ *
+ * The navigation menu is fixed to the bottom of the page, with a cityscape
+ * image above it.  We add a background hover effect to these anchors as well.
+ */
+
+nav
+	
+	bottom: 0
+	position: fixed
+	width: 100%
+	z-index: 2 ////////////////////////////////////////////////////////////////
+	
+	.cityscape
+		background: url(resources/sprite.png) repeat-x center bottom
+		background-size: 100%
+		bottom: 0
+		height: 0
+		padding-bottom: 20%
+		pointer-events: none
+	
+	a
+		color: #FFFFFF
+		display: inline-block
+		padding: 1em 1em
+		text-decoration: none
+		
+		&:hover, &:focus
+			background: lighten($grey, 20%)
+		
+		-webkit-transition: background 1s, color 1s
+		-moz-transition: background 1s, color 1s
+		-ms-transition: background 1s, color 1s
+		-o-transition: background 1s, color 1s
+		transition: background 1s, color 1s
+	
+	ul, .compact-menu
+		background: $grey
+		width: 100%
+
+	li
+		display: inline-block
+
+
+// This class represents the container within each <section> that restricts
+// all elements to $maxWidth size, centered on the page.
+
+.wrap
+	
+	margin: auto
+	max-width: $maxWidth
+	padding: 1em
+	@extend %clearfix
+
+
+// All headers use our chosen sans-serif typeface.
+
+h1, h2, h3, h4
+	
+	font-family: $sansType
+
+
+/* Feature
+ *
+ * This is the primary, above-the-fold section on the site.  It contains
+ * information about the next main Late Knights event, including the 11x17
+ * poster for the event.  Our main purpose is to inform and invite people to
+ * the events, so this is the most important section.
+ */
+
+#feature
+	
+	// In order to have a position: absolute poster in this section, the parent
+	// element needs to be position: relative.
+	
+	position: relative
+	
+	article
+		margin: auto
+		text-align: center
+	
+	// The information section, on a desktop browser, is 336px from the left;
+	// that's 320px for the poster and 16px for the poster's left margin.
+
+	.info
+		margin: 20% 336px 20% 0
+	
+	// The poster used here is the 11x17 version the designers already make.  We
+	// didn't want to force them to make yet another format.
+
+	.poster
+		background-position: center
+		background-repeat: no-repeat
+		background-size: contain
+		height: 500px
+		width: 320px
+		
+		// Here's a fun hack:  In order to have the poster centered relative to
+		// the event information, we make the event information larger than the
+		// poster (using top and bottom margin) and then make the poster
+		// position: absolute.  By saying that both the top and bottom limits
+		// of the position are 0, the browser centers the poster vertically.
+		// Note that a set height (500px) is required for this to work.
+
+		position: absolute
+		top: 0
+		bottom: 0
+		right: 1em
+		
+	// "Late Knights" is inside a <span> within the <h1> element as a background
+	// image.  We did this because the h1 needs to have its normal, 100% width
+	// in order to center itself with the other text.
+	
+	h1 span
+		background-image: url(resources/sprite.png)
+		background-position: 100% 0 
+		display: inline-block
+		height: 80px
+		text-indent: -9999px
+		width: 450px
+		
+	// "presents..."
+	
+	h2
+		color: $cream
+		font-size: 1.5em
+		font-style: italic
+	
+	.name
+		font-family: $sansType
+		font-size: 2.5em
+		margin: 0.5em 0 0 0
+	
+	// These are display: inline-block in order to have them wrap to two lines
+	// only as necessary based on the space available.  The <span> elements
+	// within them allow the date, time, etc. to wrap together.
+	
+	.datetime, .location
+		display: inline-block
+		font-size: 1.25em
+		margin-top: 0.5em
+		
+		span
+			display: inline-block
+		
+	.description
+		margin: 1em 0
+		
+	.link, .posterlink
+		display: inline-block
+		margin: 0 1em
+
+
+/* About
+ *
+ * This section provides general information about Late Knights.  It includes
+ * the Late Knights logo, "MidKnight", and some text.  MidKnight is set to the
+ * left in order to balance the right-sided poster above.
+ */
+
+#about
+	
+	// In order to have the logo position: absolute, this needs to be relative.
+	position: relative
+	
+	article
+		margin: auto
+		
+	// MidKnight is contained in a sprite that also includes the city scape and
+	// Late Knights text.
+	
+	.logo
+		background-image: url(resources/sprite.png)
+		background-position: 0 0 
+		height: 200px
+		width: 280px
+		
+		// As with the event poster, we can vertically center any element with a
+		// set height by positioning it absolutely and setting both the top and
+		// bottom to 0.
+		
+		position: absolute
+		top: 0
+		bottom: 0
+	
+	// To make room for the logo, the text needs a left margin.
+
+	.about
+		margin-left: 280px
+	
+	h1
+		color: $yellow
+		font-size: 2em
+		margin-bottom: 0.5em
+		
+	p
+		font-weight: 300
+
+
+/* Events
+ *
+ * This is a full event listing that may include non-feature events as well as
+ * past events.
+ */	
+
+#events
+	
+	article
+		float: left
+		margin: 2em 0
+		width: 50%
+		
+		&:nth-child(2n)
+			clear: left
+			padding-right: 1em
+		
+		&:nth-child(2n+1)
+			clear: right
+			padding-left: 1em
+			
+	.datetime, .location
+		display: inline-block
+		margin-bottom: 1em
+		
+		span
+			display: inline-block
+	
+	h1
+		color: $yellow
+		font-size: 2em
+		margin-bottom: 0.5em
+	
+	h2
+		font-size: 1.25em
+		margin-bottom: 0.25em
+
+
+/* Other Info
+ *
+ * This section provides information about volunteering for Late Knights and
+ * tabling for Registered Student Organizations.
+ */
+
+#other-info
+	
+	article
+		margin: 3em auto
+		max-width: 750px
+	
+	h1
+		color: $yellow
+		font-size: 1.5em
+		font-weight: 500
+		margin: 1.5em 0 0.5em 0
+
+
+/* Policies
+ *
+ * Part of the information for Student Orgs is a set of policies.  This section
+ * becomes visible via Fancybox by clicking the "See Our Policies" link.
+ */
+
+#policies
+
+	display: none
+	
+	h2
+		font-size: 1.5em
+	
+	ul
+		list-style: disc outside none
+		margin-left: 2em
+
+
+/* Executive Board
+ *
+ * Last but not least, we have a listing of the executive board for the agency.
+ */
+
+#exec-board
+
+	@extend %clearfix
+
+	h1
+		color: $yellow
+		font-size: 1.5em
+		margin-bottom: 1em
+	
+	article
+		float: left
+		padding: 1em
+		text-align: center
+		width: 25%
+		
+		// If the individual articles have differing heights, the floating
+		// might not work properly if you don't explicitly clear each row
+		// individually.  We start with 4 columns.
+
+		&:nth-child(4n+2)
+			clear: left
+	
+	h2
+		margin-bottom: 0.5em 
+	
+	h3, a
+		font-size: 0.75em 
+	
+	.bio
+		display: none
+
+
+/* Stars
+ *
+ * For fun, we added yellow stars (periods) that appear, disappear, and
+ * periodically move around the background.  The mechanics of this can be
+ * found in js/main.js.
+ */
+
+.stars
+	
+	.star
+
+		// Yellow stars are less piercing and more pleasant.
+		color: #dcba4c
+		
+		// Allow jQuery to display them when it's ready.
+		display: none
+		
+		// The stars, like the background, scroll with the viewport.
+		position: fixed
+		
+		// Don't show up above text or other elements.
+		z-index: -1
+
+
+
+
+/* Media Queries
+ *
+ * While the majority of the site is built desktop-first (shame on us), there is
+ * one media query below that uses "min-width"... Be careful with that.
+ */
+
+// Set the city scape to be of constant size once the screen extends past the
+// maximum width.
+
+@media screen and (min-width: $maxWidth)
+	
+	nav .cityscape
+		
+		background-size: 1000px
+		height: 170px
+		padding-bottom: 0
+
+
+// At 818px, the poster starts to crowd the feature information.  Remove it,
+// because we treat mobile traffic with a heavy hand.  As well, the Late Knights
+// logo starts to crowd the 'about' text, so we move it up above.
+
+@media screen and (max-width: 818px)
+
+	#feature
+		.poster
+			display: none
+		.info
+			margin: 20% 0
+	
+	#about
+		.logo
+			display: block
+			position: static
+			margin-bottom: 2em
+		.about
+			margin-left: 0
+		
+
+// At 800px, events no longer fit into two columns, so we extend them to 100%
+// width and remove the padding that was separating them before.  As well,
+// The executive board section needs to collapse to 3 columns.
+
+@media screen and (max-width: 800px)
+	
+	#events article
+		width: 100%
+		
+		&:nth-child(n)
+			padding: 0
+
+	#exec-board article
+		width: 33.33%
+		
+		&:nth-child(4n+2)
+			clear: none
+		
+		&:nth-child(3n+2)
+			clear: left
+
+
+// At 640px, it's time to collapse the executive board to two columns.
+
+@media screen and (max-width: 640px)
+
+	#exec-board article
+		width: 50%
+		
+		&:nth-child(3n+2)
+			clear: none
+		
+		&:nth-child(2n+2)
+			clear: left
+
+
+// At 482px (450px for the text, 32px for padding), the "Late Knights" text is
+// too big to fit on the page.  We scale it down accordingly.
+
+@media screen and (max-width: 482px)
+
+	#feature h1 span
+		-webkit-background-size: 333.3333%
+		-o-background-size: 333.3333%
+		background-size: 333.3333%
+		height: 0
+		padding-top: 17.7777778%
+		width: 100%
+
+
+// At 440px, everything on the page is now down to one column (the last thing
+// was the executive board).  Thus, for good looks, we set each section title
+// to be centered.
+
+@media screen and (max-width: 440px)
+
+	.wrap h1
+		text-align: center
+
+	#exec-board article
+		width: 100%
