@@ -27,7 +27,7 @@ if ($eventLoop->have_posts()) {
 
 	if ($poster) {
 ?>
-				<article class="poster" style="background-image: url(<?php echo $poster; ?>);"></article>
+				<article class="poster" style="background-image: url(<?php echo $poster; ?>); filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo $poster; ?>', sizingMethod='scale'); -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo $poster; ?>', sizingMethod='scale')""></article>
 <?php
 }
 ?>
