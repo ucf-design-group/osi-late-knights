@@ -2,7 +2,7 @@
 				<h1>Executive Board</h1>
 <?php
 
-$boardQuery = array('post_type' => 'exec-board', 'posts_per_page' => -1, 'orderby' => 'leader-form-order', 'order' => 'ASC');
+$boardQuery = array('post_type' => 'exec-board', 'posts_per_page' => -1, 'meta_key' => 'leader-form-order', 'orderby' => 'meta_value', 'order' => 'ASC');
 $boardLoop = new WP_Query($boardQuery);
 
 while ($boardLoop->have_posts()) {
