@@ -1,6 +1,6 @@
 <?php
 
-$eventQuery = array('post_type' => 'osi-events', 'posts_per_page' => 1, 'orderby' => 'meta_value', 'order' => 'DESC', 'meta_key' => 'oe-form-start', 'meta_value' => time(), 'meta_compare' => '>=', 'category_name' => 'feature');
+$eventQuery = array('post_type' => 'osi-events', 'posts_per_page' => 1, 'orderby' => 'meta_value', 'order' => 'DESC', 'meta_key' => 'oe-form-start', 'category_name' => 'feature');
 $eventLoop = new WP_Query($eventQuery);
 
 if ($eventLoop->have_posts()) {
